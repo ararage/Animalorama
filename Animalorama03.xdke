@@ -1,8 +1,8 @@
 {
   "project": {
     "projectSettingsVersion": "1.2",
-    "initialAutoPluginCount": 2,
-    "currentBuildConfiguration": "Android",
+    "initialAutoPluginCount": 0,
+    "currentBuildConfiguration": "WebApp",
     "projectFiles": {},
     "projectDirectories": {}
   }
