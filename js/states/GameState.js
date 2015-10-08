@@ -1,6 +1,16 @@
 var GameState = {
     preload:function(){//Cargamos el json de la configuracion de los animales
-      this.load.text('animals','assets/data/data.json'); },
+      this.load.text('animals','assets/data/data.json');
+      this.load.audio('black', ['assets/audio/black.ogg', 'assets/audio/black.mp3']);
+      this.load.audio('blue', ['assets/audio/blue.ogg', 'assets/audio/blue.mp3']);
+      this.load.audio('brown', ['assets/audio/brown.ogg', 'assets/audio/brown.mp3']);
+      this.load.audio('green', ['assets/audio/green.ogg', 'assets/audio/green.mp3']);
+      this.load.audio('orange', ['assets/audio/orange.ogg', 'assets/audio/orange.mp3']);
+      this.load.audio('pink', ['assets/audio/pink.ogg', 'assets/audio/pink.mp3']);
+      this.load.audio('red', ['assets/audio/red.ogg', 'assets/audio/red.mp3']);
+      this.load.audio('white', ['assets/audio/white.ogg', 'assets/audio/white.mp3']);
+      this.load.audio('yellow', ['assets/audio/yellow.ogg', 'assets/audio/yellow.mp3']);      
+    },
 	create:function(){
        
         this.animalData = JSON.parse(this.cache.getText('animals'));
@@ -14,7 +24,7 @@ var GameState = {
    		this.scale.setScreenSize(true);
    		//create a sprite for the background
     	this.background = this.game.add.sprite(0, 0, 'background');
-
+        this.background.inputEnabled = true;
         //Generamos los animales de manera aleatoria a utilizar
         var arrayFiguresAndAnimals = this.generaMemorama(this.animalData.animals);
         var animalToFind = arrayFiguresAndAnimals[this.getRandomInt(0,8)].key;
@@ -39,6 +49,8 @@ var GameState = {
         var arrayPosicionesParaAnimales = [];
         var cardGlobal;
         var animalGlobal;
+
+        var booleanShowed = false;
         this.animalData.figures.forEach(function(element){
             //console.log("ESTO "+this.animalData.animals[arrayFiguresAndAnimals[counter].id].key);
             //Se crea tarjeta
@@ -64,6 +76,11 @@ var GameState = {
         //Dibujamos el animal a pintar, esto se cambiara con las letras
         var style = { font: '20px Arial', fill: '#fff'};
         this.game.add.text(400, 20, 'Animal to find: '+animalToFind, style);
+        //No se bloquea la UI al inicio
+        this.uiBlocked = false;
+        
+        //No se ha seleccionado nada
+        this.selectedItem = false;
         
         //this.animals = this.game.add.group();
         //var selfAnimal = this;
@@ -102,7 +119,12 @@ var GameState = {
 
         //pintamos las figuras
 	},
-	update:function(){},
+	update:function(){
+        /*console.log("Bloqueado");
+        if(this.selectedItem){
+            this.uiBlocked = true;
+        }*/
+    },
 
     //generamos el Memorama a partir del arreglo de los 21 animales
     generaMemorama:function(animalData){
@@ -134,39 +156,82 @@ var GameState = {
 
     //Se encarga de animar cada una de las tarjetas
     animateFigure: function(card,event){
-        cardGlobal = card;
-        animalGlobal = card.customParams.animal;
-        card.customParams.audio.play();
-        var millisecondsToWait = 1000;
+        /*if(!this.selectedItem){
+            this.selectedItem = true;    
+        }*/
+        this.selectedItem = true
         
-        if(card.customParams.animal.key == card.customParams.toFind){
-            console.log("Encontrado");
-            console.log("Ganaste :D");
-
-            game.time.events.add(Phaser.Timer.SECOND * 2, this.fadeImage, this);
-            game.time.events.add(Phaser.Timer.SECOND * 2, this.showAnimal, this);
-            game.time.events.add(Phaser.Timer.SECOND * 10, this.youWin, this);
-            
-        }else{
-            console.log("no es");
-            game.time.events.add(Phaser.Timer.SECOND * 1, this.fadeImage, this);
-            game.time.events.add(Phaser.Timer.SECOND * 1, this.showAnimal, this);
-            game.time.events.add(Phaser.Timer.SECOND * 4, this.badCard, this);   
+        var millisecondsToWait = 4000;
+        var timer;
+        console.log("¿Esta bloqueado? "+this.uiBlocked);
+        if(!this.uiBlocked){
+            this.uiBlocked = true;
+            console.log("¿Ahora Esta bloqueado? "+this.uiBlocked);
+            cardGlobal = card;
+            animalGlobal = card.customParams.animal;
+            card.customParams.audio.play();
+            if(card.customParams.animal.key == card.customParams.toFind){
+                setTimeout(function() {
+                    // Whatever you want to do after the wait
+                    this.uiBlocked = true;
+                    console.log("Ganaste :D");
+                    console.log("Encontrado "+this.uiBlocked);
+                    
+                }, millisecondsToWait);
+                game.time.events.add(Phaser.Timer.SECOND * 1, this.fadeImage, this);
+                game.time.events.add(Phaser.Timer.SECOND * 1, this.showAnimal, this);
+                game.time.events.add(Phaser.Timer.SECOND * 3, this.youWin, this);
+                this.uiBlocked = false;
+                //
+            }else{
+                //this.uiBlocked = true;
+                console.log("Bloqueado? "+this.uiBlocked);
+                game.time.events.add(Phaser.Timer.SECOND * 1, this.fadeImage, this);
+                game.time.events.add(Phaser.Timer.SECOND * 1, this.showAnimal, this);
+                game.time.events.add(Phaser.Timer.SECOND * 3, this.badCard, this); 
+                game.time.events.add(Phaser.Timer.SECOND * 4, this.unlockUI,this);
+                //timer = game.time.create(false);
+                //timer.add(1000,this.fadeImage(),this);
+                //timer.add(1000,this.showAnimal(),this);
+                //timer.add(3000,this.badCard(),this);
+                //card.timerInstance = timer;
+                //timer.start();
+                //this.uiBlocked = false;
+                
+                /*setTimeout(function() {
+                    this.uiBlocked = false;
+                    console.log("Bloqueado? Dentro del set "+this.uiBlocked);
+                },6000);*/
+                console.log("Y ahora? "+this.uiBlocked);
+                
+                //this.uiBlocked = false;
+                //this.unlockUI();
+                
+            }    
         }
+        
+    },
+
+    unlockUI:function(){
+        this.uiBlocked = false;
     },
     fadeImage: function(){
+        console.log("fade");
         console.log(cardGlobal);
         game.add.tween(cardGlobal).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
-
+        //this.uiBlocked = true;
     },
     showAnimal: function(){
         console.log("Le animal"+animalGlobal);
         game.add.tween(animalGlobal).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
-       
+        //this.uiBlocked = true;
+        
     },
     badCard: function(){
+        console.log("bad");
         game.add.tween(cardGlobal).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
         game.add.tween(animalGlobal).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+        //this.uiBlocked = true;
     },
     youWin: function(){
         alert('Ganaste :D');

@@ -141,15 +141,6 @@ var PreloadState = {
       this.load.image('triangle_white', 'assets/images/figures/triangles/triangle_white.png');
       this.load.image('triangle_yellow', 'assets/images/figures/triangles/triangle_yellow.png');
       
-      this.load.audio('black', ['assets/audio/black.ogg', 'assets/audio/black.mp3']);
-      this.load.audio('blue', ['assets/audio/blue.ogg', 'assets/audio/blue.mp3']);
-      this.load.audio('brown', ['assets/audio/brown.ogg', 'assets/audio/brown.mp3']);
-      this.load.audio('green', ['assets/audio/green.ogg', 'assets/audio/green.mp3']);
-      this.load.audio('orange', ['assets/audio/orange.ogg', 'assets/audio/orange.mp3']);
-      this.load.audio('pink', ['assets/audio/pink.ogg', 'assets/audio/pink.mp3']);
-      this.load.audio('red', ['assets/audio/red.ogg', 'assets/audio/red.mp3']);
-      this.load.audio('white', ['assets/audio/white.ogg', 'assets/audio/white.mp3']);
-      this.load.audio('yellow', ['assets/audio/yellow.ogg', 'assets/audio/yellow.mp3']);    
       
   },
   create: function() {
