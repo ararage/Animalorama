@@ -47,5 +47,28 @@
         {"id":9,"key":"white"},
         {"id":10,"key":"yellow"}
     ],
+    "animals_sound":[
+        {"id":0,"key":"bear"},
+        {"id":1,"key":"camel_"},
+        {"id":2,"key":"dolphin_"},
+        {"id":3,"key":"elephant"},
+        {"id":4,"key":"flamenco_"},
+        {"id":5,"key":"giraffe_"},
+        {"id":6,"key":"hippopotamus_"},
+        {"id":7,"key":"kangaroo_"},
+        {"id":8,"key":"krokodil_"},
+        {"id":9,"key":"lion_"},
+        {"id":10,"key":"monkey_"},
+        {"id":11,"key":"panda_bear_"},
+        {"id":12,"key":"parrot_"},
+        {"id":13,"key":"penguin_"},
+        {"id":14,"key":"polar_bear_"},
+        {"id":15,"key":"rhino_"},
+        {"id":16,"key":"seal_"},
+        {"id":17,"key":"snake_"},
+        {"id":18,"key":"tiger"},
+        {"id":19,"key":"toucan_"},
+        {"id":20,"key":"zebra"}
+    ],
     "number_stages":5
 }

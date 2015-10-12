@@ -1,18 +1,39 @@
 var GameState = {
     preload:function(){//Cargamos el json de la configuracion de los animales
-      this.load.text('animals','assets/data/data.json');
-      this.load.audio('black', ['assets/audio/black.ogg', 'assets/audio/black.mp3']);
-      this.load.audio('blue', ['assets/audio/blue.ogg', 'assets/audio/blue.mp3']);
-      this.load.audio('brown', ['assets/audio/brown.ogg', 'assets/audio/brown.mp3']);
-      this.load.audio('green', ['assets/audio/green.ogg', 'assets/audio/green.mp3']);
-      this.load.audio('orange', ['assets/audio/orange.ogg', 'assets/audio/orange.mp3']);
-      this.load.audio('pink', ['assets/audio/pink.ogg', 'assets/audio/pink.mp3']);
-      this.load.audio('red', ['assets/audio/red.ogg', 'assets/audio/red.mp3']);
-      this.load.audio('white', ['assets/audio/white.ogg', 'assets/audio/white.mp3']);
-      this.load.audio('yellow', ['assets/audio/yellow.ogg', 'assets/audio/yellow.mp3']);      
+        this.load.text('animals','assets/data/data.json');
+        this.load.audio('black', ['assets/audio/black.ogg', 'assets/audio/black.mp3']);
+        this.load.audio('blue', ['assets/audio/blue.ogg', 'assets/audio/blue.mp3']);
+        this.load.audio('brown', ['assets/audio/brown.ogg', 'assets/audio/brown.mp3']);
+        this.load.audio('green', ['assets/audio/green.ogg', 'assets/audio/green.mp3']);
+        this.load.audio('orange', ['assets/audio/orange.ogg', 'assets/audio/orange.mp3']);
+        this.load.audio('pink', ['assets/audio/pink.ogg', 'assets/audio/pink.mp3']);
+        this.load.audio('red', ['assets/audio/red.ogg', 'assets/audio/red.mp3']);
+        this.load.audio('white', ['assets/audio/white.ogg', 'assets/audio/white.mp3']);
+        this.load.audio('yellow', ['assets/audio/yellow.ogg', 'assets/audio/yellow.mp3']);      
+        this.load.audio('bear',['assets/audio/animals/bear.mp3']);
+        this.load.audio('camel',['assets/audio/animals/camel_.mp3']);
+        this.load.audio('dolphin',['assets/audio/animals/dolphin_.mp3']);
+        this.load.audio('elephant',['assets/audio/animals/elephant.mp3']);
+        this.load.audio('flamenco',['assets/audio/animals/flamenco_.mp3']);
+        this.load.audio('giraffe',['assets/audio/animals/giraffe_.mp3']);
+        this.load.audio('hippopotamus',['assets/audio/animals/hippopotamus_.mp3']);
+        this.load.audio('kangaroo',['assets/audio/animals/kangaroo_.mp3']);
+        this.load.audio('krokodil',['assets/audio/animals/krokodil_.mp3']);
+        this.load.audio('lion',['assets/audio/animals/lion_.mp3']);
+        this.load.audio('monkey',['assets/audio/animals/monkey_.mp3']);
+        this.load.audio('panda_bear',['assets/audio/animals/panda_bear_.mp3']);
+        this.load.audio('parrot',['assets/audio/animals/parrot_.mp3']);
+        this.load.audio('penguin',['assets/audio/animals/penguin_.mp3']);
+        this.load.audio('polar_bear',['assets/audio/animals/polar_bear_.mp3']);
+        this.load.audio('rhino',['assets/audio/animals/rhino_.mp3']);
+        this.load.audio('seal',['assets/audio/animals/seal_.mp3']);
+        this.load.audio('snake',['assets/audio/animals/snake_.mp3']);
+        this.load.audio('tiger',['assets/audio/animals/tiger.mp3']);
+        this.load.audio('toucan',['assets/audio/animals/toucan_.mp3']);
+        this.load.audio('zebra',['assets/audio/animals/zebra_.mp3']);
     },
-	create:function(){
-       
+	create:function(){    
+        console.log("Attempts "+this.atempts); 
         this.animalData = JSON.parse(this.cache.getText('animals'));
         console.log(this.animalData);
 		//scaling options
@@ -62,7 +83,7 @@ var GameState = {
             //animal.visible = false;
             animal.alpha = 0;
             arrayPosicionesParaAnimales.push({posX:element.x,posY:element.y});
-            card.customParams = {animal:animal,color:element.key,audio:self.game.add.audio(this.animalData.colors[randomUniqueColors[counter]].key),toFind:animalToFind};
+            card.customParams = {animal:animal,animalAudio:self.game.add.audio(animal.key),color:element.key,audio:self.game.add.audio(this.animalData.colors[randomUniqueColors[counter]].key),toFind:animalToFind};
             
             //console.log("Este es el sonido "+this.animalData.colors[randomUniqueColors[counter]].key);
             card.anchor.setTo(0.5);
@@ -124,6 +145,8 @@ var GameState = {
         if(this.selectedItem){
             this.uiBlocked = true;
         }*/
+
+        //console.log("Intento "+this.atempt);
     },
 
     //generamos el Memorama a partir del arreglo de los 21 animales
@@ -171,45 +194,24 @@ var GameState = {
             animalGlobal = card.customParams.animal;
             card.customParams.audio.play();
             if(card.customParams.animal.key == card.customParams.toFind){
-                setTimeout(function() {
-                    // Whatever you want to do after the wait
-                    this.uiBlocked = true;
-                    console.log("Ganaste :D");
-                    console.log("Encontrado "+this.uiBlocked);
-                    
-                }, millisecondsToWait);
+                
                 game.time.events.add(Phaser.Timer.SECOND * 1, this.fadeImage, this);
                 game.time.events.add(Phaser.Timer.SECOND * 1, this.showAnimal, this);
                 game.time.events.add(Phaser.Timer.SECOND * 3, this.youWin, this);
-                this.uiBlocked = false;
-                //
+                //card.customParams.animalAudio.play();
+                this.uiBlocked = true;
+                
             }else{
-                //this.uiBlocked = true;
                 console.log("Bloqueado? "+this.uiBlocked);
                 game.time.events.add(Phaser.Timer.SECOND * 1, this.fadeImage, this);
                 game.time.events.add(Phaser.Timer.SECOND * 1, this.showAnimal, this);
                 game.time.events.add(Phaser.Timer.SECOND * 3, this.badCard, this); 
                 game.time.events.add(Phaser.Timer.SECOND * 4, this.unlockUI,this);
-                //timer = game.time.create(false);
-                //timer.add(1000,this.fadeImage(),this);
-                //timer.add(1000,this.showAnimal(),this);
-                //timer.add(3000,this.badCard(),this);
-                //card.timerInstance = timer;
-                //timer.start();
-                //this.uiBlocked = false;
-                
-                /*setTimeout(function() {
-                    this.uiBlocked = false;
-                    console.log("Bloqueado? Dentro del set "+this.uiBlocked);
-                },6000);*/
+                //card.customParams.animalAudio.play();
+                console.log("AUDIO DEL ANIMAL "+card.customParams.animalAudio)
                 console.log("Y ahora? "+this.uiBlocked);
-                
-                //this.uiBlocked = false;
-                //this.unlockUI();
-                
             }    
         }
-        
     },
 
     unlockUI:function(){
@@ -219,25 +221,24 @@ var GameState = {
         console.log("fade");
         console.log(cardGlobal);
         game.add.tween(cardGlobal).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
-        //this.uiBlocked = true;
     },
     showAnimal: function(){
         console.log("Le animal"+animalGlobal);
-        game.add.tween(animalGlobal).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
-        //this.uiBlocked = true;
-        
+        cardGlobal.customParams.animalAudio.play();
+        game.add.tween(animalGlobal).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);        
     },
     badCard: function(){
         console.log("bad");
         game.add.tween(cardGlobal).to( { alpha: 1 }, 2000, Phaser.Easing.Linear.None, true);
         game.add.tween(animalGlobal).to( { alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
-        //this.uiBlocked = true;
     },
     youWin: function(){
         alert('Ganaste :D');
+        this.atempts++;
         game.state.start('GameState');
     }
 };
+
 
 //var game = new Phaser.Game(640, 360, Phaser.AUTO);
 //game.state.add('GameState', GameState);
