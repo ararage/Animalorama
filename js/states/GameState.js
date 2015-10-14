@@ -103,6 +103,13 @@ var GameState = {
         //No se ha seleccionado nada
         this.selectedItem = false;
         
+        this.drawAnimalToFind = this.game.add.sprite(500,170,animalToFind)
+        this.drawAnimalToFind.customParams = {audio:game.add.audio(animalToFind)};
+        this.drawAnimalToFind.scale.setTo(0.6,0.6);
+        this.drawAnimalToFind.anchor.setTo(0.5);
+        this.drawAnimalToFind.inputEnabled = true
+        this.drawAnimalToFind.events.onInputDown.add(this.playSound,this);
+
         //this.animals = this.game.add.group();
         //var selfAnimal = this;
         //var animal;
@@ -141,14 +148,17 @@ var GameState = {
         //pintamos las figuras
 	},
 	update:function(){
-        /*console.log("Bloqueado");
-        if(this.selectedItem){
-            this.uiBlocked = true;
-        }*/
-
-        //console.log("Intento "+this.atempt);
+         
     },
 
+    playSound: function(sprite,event){
+        if(!this.uiBlocked){
+            //console.log("REFRESCO "+sprite.customParams.audio);
+            //this.uiBlocked = true;
+            this.drawAnimalToFind.customParams.audio.play();
+
+        }
+    },
     //generamos el Memorama a partir del arreglo de los 21 animales
     generaMemorama:function(animalData){
         var memorama = [];
